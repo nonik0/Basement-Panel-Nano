@@ -1,0 +1,85 @@
+  // refreshTimer = timerBegin(1000000);
+  // timerAttachInterrupt(refreshTimer, &refreshTimerCallback);
+  // timerAlarm(refreshTimer, REFRESH_RATE_US, true, 0);
+  // log_d("Started refresh timer");
+
+
+// volatile int curLine = 0;
+// void IRAM_ATTR refreshTimerCallback() {
+//   uint16_t rowData, colData;
+
+//   if (curLine < NUM_ROWS) {
+//     rowData = ~displayBuffer[curLine];
+//     colData = ~(0x01 << curLine);
+//   }
+//   else {
+//     rowData = 0xFFFF;
+//     colData = 0xFFFF;
+//   }
+
+//   SPI.transfer16(rowData);
+//   SPI.transfer16(colData);
+//   digitalWrite(LATCH_PIN, LOW);
+//   digitalWrite(LATCH_PIN, HIGH);
+
+//   curLine = (curLine + 1) % (NUM_ROWS + NUM_BLANK_CYCLES);
+
+//   // for (curLine = 0; curLine < NUM_ROWS; curLine++) {
+//   //   SPI.transfer16(~displayBuffer[curLine]); // row data
+//   //   SPI.transfer16(~(0x01 << curLine));  // select col
+//   //   digitalWrite(LATCH_PIN, LOW);
+//   //   digitalWrite(LATCH_PIN, HIGH);
+//   // }
+//   // SPI.transfer16(0xFFFF);
+//   // SPI.transfer16(0xFFFF);
+//   // digitalWrite(LATCH_PIN, LOW);
+//   // digitalWrite(LATCH_PIN, HIGH);
+// }
+
+// void setPixel(uint8_t x, uint8_t y, bool state) {
+//   if (x < 0 || x >= NUM_COLS || y < 0 || y >= NUM_ROWS) {
+//     return;
+//   }
+
+//   if (state) {
+//     displayBuffer[y] &= ~(1 << x);
+//   } else {
+//     displayBuffer[y] |= 1 << x;
+//   }
+// }
+
+
+void core0Task(void *pvParameters) {
+  pinMode(EXT_DISPLAY_PIN, OUTPUT);
+  pinMode(DISPLAY_PIN, OUTPUT);
+  digitalWrite(EXT_DISPLAY_PIN, display);
+  digitalWrite(DISPLAY_PIN, !display);
+  // wifiSetup();
+  // mDnsSetup();
+  // otaSetup();
+  // restSetup();
+
+  while (1) {
+    // ArduinoOTA.handle();
+    // restServer.handleClient();
+    // checkWifiStatus();
+
+    // digitalWrite(EXT_DISPLAY_PIN, display);
+    // digitalWrite(DISPLAY_PIN, !display);
+
+    // delay(50);
+  }
+}
+
+void core1Task(void *pvParameters) {
+  pinMode(LATCH_PIN, OUTPUT);
+  digitalWrite(LATCH_PIN, LOW);
+  SPI.begin();
+
+  // refreshTimer = timerBegin(1000000);
+  // timerAttachInterrupt(refreshTimer, &refreshTimerCallback);
+  // timerAlarm(refreshTimer, REFRESH_RATE_US, true, 0);
+  // log_d("Started refresh timer");
+
+  //vTaskDelete(NULL);
+}
